@@ -176,7 +176,7 @@ function cityCode() {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     data = JSON.parse(data)
-                    console.log(`当前城市\n`, data)
+                    console.log(`当前城市\n`, data.data)
                     if (data.success) {
                         cityNumber = data.data.locate_city.city_number;
                         console.log('当前城市:', `${data.data.locate_city.city_name}\n`);

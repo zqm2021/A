@@ -8,7 +8,7 @@ url中 /api/v2/user/randomlist?api_version=9.1.0&app_client_id=1&xxxx 问号后�
 关键参数 station_id、stationId、uid、latitude、longitude、lat、lng
 
 [task_local]
-18 8,11,15 * * * ddxp_fish.js
+18 8,11,17 * * * ddxp_fish.js
 */
 
 // 7-9点,10-12点,16-18点开启，随机得励5-25g饲料
@@ -183,7 +183,7 @@ function cityCode() {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     data = JSON.parse(data)
-                    console.log(`当前城市\n`, data)
+                    console.log(`当前城市\n`, data.data)
                     if (data.success) {
                         cityNumber = data.data.locate_city.city_number;
                         console.log('当前城市:', `${data.data.locate_city.city_name}\n`);
