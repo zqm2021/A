@@ -115,13 +115,13 @@ function getUrl(ddxpurl) {
 function userInfo() {
     return new Promise((resove) => {
         let options = {
-            url: `https://maicai.api.ddxq.mobi/user/info?api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.40.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}`,
+            url: `https://maicai.api.ddxq.mobi/user/info?api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.41.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}`,
             headers: {
                 "accept": "*/*",
                 "origin": "https://activity.m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-encoding": "gzip, deflate, br",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "accept-language": "zh-cn",
                 "referer": "https://activity.m.ddxq.mobi/"
             }
@@ -155,7 +155,7 @@ function userInfo() {
 // 获取定位城市
 function cityCode() {
     return new Promise((resove) => {
-        let url = `https://sunquan.api.ddxq.mobi/api/v2/user/location/city/?api_version=9.1.0&app_client_id=1&station_id=${headerInfo.station_id}&stationId=${headerInfo.station_id}&native_version=&app_version=9.40.0&uid=${headerInfo.uid}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&lat=${headerInfo.lat}&lng=${headerInfo.lng}`
+        let url = `https://sunquan.api.ddxq.mobi/api/v2/user/location/city/?api_version=9.1.0&app_client_id=1&station_id=${headerInfo.station_id}&stationId=${headerInfo.station_id}&native_version=&app_version=9.41.0&uid=${headerInfo.uid}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&lat=${headerInfo.lat}&lng=${headerInfo.lng}`
         let options = {
             url: url,
             headers: {
@@ -163,7 +163,7 @@ function cityCode() {
                 "origin": "https://orchard-m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-encoding": "gzip, deflate, br",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "accept-language": "zh-cn",
                 "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
             }
@@ -205,11 +205,11 @@ function onSignin() {
                 "cookie": cookie,
                 "content-length": "166",
                 "accept-language": "zh-cn",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "referer": "https://activity.m.ddxq.mobi/",
                 "accept-encoding": "gzip, deflate, br"
             },
-            body: `api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.40.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}`,
+            body: `api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.41.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}`,
         }
         $.post(options, async (error, response, data) => {
             try {

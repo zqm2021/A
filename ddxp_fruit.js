@@ -24,7 +24,7 @@ let allMessage = '';
 
 let cityNumber = '1001';
 let seedId = '', propsId = '';
-let feedAmount = '', fertilizerAmount='', expPercent = '';
+let feedAmount = '', fertilizerAmount='', fertilizerUseAmount='', expPercent = '';
 
 !(async () => {
     if (ddxpcookie && ddxpheader) {
@@ -124,13 +124,13 @@ function getUrl(ddxpurl) {
 function userInfo() {
     return new Promise((resove) => {
         let options = {
-            url: `https://maicai.api.ddxq.mobi/user/info?api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.40.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}`,
+            url: `https://maicai.api.ddxq.mobi/user/info?api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.41.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}`,
             headers: {
                 "accept": "*/*",
                 "origin": "https://activity.m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-encoding": "gzip, deflate, br",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "accept-language": "zh-cn",
                 "referer": "https://activity.m.ddxq.mobi/"
             }
@@ -164,7 +164,7 @@ function userInfo() {
 // 获取定位城市
 function cityCode() {
     return new Promise((resove) => {
-        let url = `https://sunquan.api.ddxq.mobi/api/v2/user/location/city/?api_version=9.1.0&app_client_id=1&station_id=${headerInfo.station_id}&stationId=${headerInfo.station_id}&native_version=&app_version=9.40.0&uid=${headerInfo.uid}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&lat=${headerInfo.lat}&lng=${headerInfo.lng}`
+        let url = `https://sunquan.api.ddxq.mobi/api/v2/user/location/city/?api_version=9.1.0&app_client_id=1&station_id=${headerInfo.station_id}&stationId=${headerInfo.station_id}&native_version=&app_version=9.41.0&uid=${headerInfo.uid}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&lat=${headerInfo.lat}&lng=${headerInfo.lng}`
         let options = {
             url: url,
             headers: {
@@ -172,7 +172,7 @@ function cityCode() {
                 "origin": "https://orchard-m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-encoding": "gzip, deflate, br",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "accept-language": "zh-cn",
                 "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
             }
@@ -214,7 +214,7 @@ function feedTaskList() {
                 "cookie": cookie,
                 "accept-language": "zh-cn",
                 "ddmc-game-tid": "2",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
                 "accept-encoding": "gzip, deflate, br"
             }
@@ -286,7 +286,7 @@ function fertilizerTaskList() {
                 "cookie": cookie,
                 "accept-language": "zh-cn",
                 "ddmc-game-tid": "2",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
                 "accept-encoding": "gzip, deflate, br"
             }
@@ -347,7 +347,7 @@ function doTask(taskCode) {
                     "cookie": cookie,
                     "accept-language": "zh-cn",
                     "ddmc-game-tid": "2",
-                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                     "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
                     "accept-encoding": "gzip, deflate, br"
                 }
@@ -392,7 +392,7 @@ function doReceiveTask() {
                 "cookie": cookie,
                 "accept-language": "zh-cn",
                 "ddmc-game-tid": "2",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
                 "accept-encoding": "gzip, deflate, br"
             }
@@ -426,14 +426,14 @@ function doReceiveTask() {
 function doBrowseTask() {
     return new Promise((resove) => {
         let options = {
-            url: `https://farm.api.ddxq.mobi/api/v2/task/achieve?latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&env=PE&station_id=${headerInfo.station_id}&city_number=${cityNumber}&api_version=9.28.0&app_client_id=3&native_version=9.40.0&h5_source=&page_type=2&gameId=2&taskCode=BROWSE_GOODS&`,
+            url: `https://farm.api.ddxq.mobi/api/v2/task/achieve?latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&env=PE&station_id=${headerInfo.station_id}&city_number=${cityNumber}&api_version=9.28.0&app_client_id=3&native_version=9.41.0&h5_source=&page_type=2&gameId=2&taskCode=BROWSE_GOODS&`,
             headers: {
                 "accept": "*/*",
                 "origin": "https://cms.api.ddxq.mobi",
                 "cookie": cookie,
                 "accept-language": "zh-cn",
                 "ddmc-game-tid": "2",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "referer": `https://cms.api.ddxq.mobi/cms-service/client/page/v1/getPageInfo?uuid=e5029b59a37c48d7&themeColor=e7fbd6&hideShare=true&gameTask=BROWSE_GOODS&s=mine_orchard&native_city_number=${cityNumber}`,
                 "accept-encoding": "gzip, deflate, br"
             }
@@ -475,7 +475,7 @@ function getBrowseTask(userTaskLogId) {
                     "cookie": cookie,
                     "accept-language": "zh-cn",
                     "ddmc-game-tid": "2",
-                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                     "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
                     "accept-encoding": "gzip, deflate, br"
                 }
@@ -520,7 +520,7 @@ function gardenInfo() {
                 "cookie": cookie,
                 "accept-language": "zh-cn",
                 "ddmc-game-tid": "2",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
                 "accept-encoding": "gzip, deflate, br"
             }
@@ -536,15 +536,31 @@ function gardenInfo() {
                     // console.log('果园的水滴、肥料\n', data)
                     if (data.success) {
                         seedId = data.data.baseSeed.seedId
-                        propsId = data.data.feed.propsId
 
+                        propsId = data.data.feed.propsId
                         feedAmount = data.data.feed.amount
+
                         fertilizerAmount = data.data.fertilizer.amount
+                        let fertilizerPropsId = data.data.fertilizer.propsId
+
+                        fertilizerUseAmount = data.data.fertilizerUse.amount
 
                         expPercent = data.data.baseSeed.expPercent
                         console.log(`果园水滴剩余:`, data.data.feed.amount)
                         console.log(`果园肥料剩余:`, data.data.fertilizer.amount)
-                        console.log(`果园可用肥料剩余:`, `${data.data.fertilizerUse.amount}\n`)
+                        console.log(`果园可用肥力值剩余:`, `${data.data.fertilizerUse.amount}\n`)
+
+                        if (fertilizerUseAmount <= 50) {
+                            console.log(`果园肥力值为: ${fertilizerUseAmount}，浇水效果已下降，准备去施肥\n`);
+                            if (fertilizerAmount >= 10) {
+                                // 去施肥
+                                $.log('去果园施肥\n');
+                                await $.wait(2000);
+                                await doProps(fertilizerPropsId);
+                            } else {
+                                console.log(`果园暂无肥料了\n`)
+                            }
+                        }
 
                         if (feedAmount >= 10) {
                             $.log('去果园浇水\n');
@@ -567,6 +583,52 @@ function gardenInfo() {
     })
 }
 
+// 去施肥
+function doProps(fertilizerPropsId) {
+    return new Promise((resove) => {
+        if (seedId && fertilizerPropsId) {
+            let options = {
+                url: `https://farm.api.ddxq.mobi/api/v2/props/props-use?${$.params}&propsCode=FERTILIZER&propsId=${fertilizerPropsId}&seedId=${seedId}`,
+                headers: {
+                    "accept": "*/*",
+                    "origin": "https://orchard-m.ddxq.mobi",
+                    "cookie": cookie,
+                    "accept-language": "zh-cn",
+                    "ddmc-game-tid": "2",
+                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
+                    "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
+                    "accept-encoding": "gzip, deflate, br"
+                }
+            }
+
+            $.get(options, async (error, response, data) => {
+                try {
+                    if (error) {
+                        console.log(`${JSON.stringify(error)}`)
+                        console.log(`${$.name} API请求失败，请检查网路重试`)
+                    } else {
+                        data = JSON.parse(data)
+                        console.log('去施肥:', data.msg)
+                        if (data.success) {
+                            console.log(`剩余肥料数量: ${data.data.propsUse.amount}`)
+                            console.log(`当前肥力值: ${data.data.propsUseResultVo.amount}\n`)
+                        } else {
+                            console.log(data.msg)
+                        }
+                    }
+                } catch (e) {
+                    $.logErr('失败', e)
+                } finally {
+                    resove()
+                }
+            })
+        } else {
+            $.log('去施肥异常')
+            resove()
+        }
+    })
+}
+
 // 去浇水
 function doWater() {
     return new Promise((resove) => {
@@ -579,7 +641,7 @@ function doWater() {
                     "cookie": cookie,
                     "accept-language": "zh-cn",
                     "ddmc-game-tid": "2",
-                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                     "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
                     "accept-encoding": "gzip, deflate, br"
                 }

@@ -122,13 +122,13 @@ function getUrl(ddxpurl) {
 function userInfo() {
     return new Promise((resove) => {
         let options = {
-            url: `https://maicai.api.ddxq.mobi/user/info?api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.40.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}`,
+            url: `https://maicai.api.ddxq.mobi/user/info?api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.41.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}`,
             headers: {
                 "accept": "*/*",
                 "origin": "https://activity.m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-encoding": "gzip, deflate, br",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "accept-language": "zh-cn",
                 "referer": "https://activity.m.ddxq.mobi/"
             }
@@ -162,7 +162,7 @@ function userInfo() {
 // 获取定位城市
 function cityCode() {
     return new Promise((resove) => {
-        let url = `https://sunquan.api.ddxq.mobi/api/v2/user/location/city/?api_version=9.1.0&app_client_id=1&station_id=${headerInfo.station_id}&stationId=${headerInfo.station_id}&native_version=&app_version=9.40.0&uid=${headerInfo.uid}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&lat=${headerInfo.lat}&lng=${headerInfo.lng}`
+        let url = `https://sunquan.api.ddxq.mobi/api/v2/user/location/city/?api_version=9.1.0&app_client_id=1&station_id=${headerInfo.station_id}&stationId=${headerInfo.station_id}&native_version=&app_version=9.41.0&uid=${headerInfo.uid}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&lat=${headerInfo.lat}&lng=${headerInfo.lng}`
         let options = {
             url: url,
             headers: {
@@ -170,7 +170,7 @@ function cityCode() {
                 "origin": "https://orchard-m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-encoding": "gzip, deflate, br",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "accept-language": "zh-cn",
                 "referer": "https://orchard-m.ddxq.mobi/?is_nav_hide=true&isResetAudio=true&s=mine_orchard",
             }
@@ -210,7 +210,7 @@ function taskList() {
                 "origin": "https://game.m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-encoding": "gzip, deflate, br",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "accept-language": "zh-cn",
                 "referer": "https://game.m.ddxq.mobi/index.html"
             }
@@ -241,7 +241,7 @@ function taskList() {
                                     console.log(`去做任务: ${task['taskName']}\n`)
                                     if (task['userTaskLogId']) {
                                         // 参与浏览商品得饲料后领取
-                                        await getBrowseTask(task['userTaskLogId'])
+                                        await getBrowseTask(task['taskName'], task['userTaskLogId'])
                                     } else {
                                         // 浏览商品得饲料任务
                                         await doBrowseTask()
@@ -263,7 +263,7 @@ function taskList() {
                                     console.log(`去做任务: ${task['taskName']}\n`)
                                     if (task['userTaskLogId']) {
                                         // 参与鱼塘翻翻乐后领取
-                                        await getFishpondDraw(task['userTaskLogId'])
+                                        await getBrowseTask(task['taskName'], task['userTaskLogId'])
                                     } else {
                                         // 参与鱼塘翻翻乐活动
                                         await doFishpondDraw()
@@ -272,7 +272,16 @@ function taskList() {
                                     // N单有礼
                                     console.log(`任务: ${task['taskName']} 需要手动完成\n`)
                                     // await doBrowseTask()
+                                } else if (task['taskCode'] == 'HARD_BOX') {
+                                    // 饲料收集器
+                                    console.log(`去做任务: ${task['taskName']}\n`)
+                                    if (task['userTaskLogId']) {
+                                        // 饲料收集器领取
+                                        await getBrowseTask(task['taskName'], task['userTaskLogId'])
+                                    }
                                 } else {
+                                    // 连续签到、每日签到领饲料、三餐开福袋得随机饲料
+                                    // CONTINUOUS_SIGN、DAILY_SIGN、LOTTERY
                                     console.log(`去做任务: ${task['taskName']}\n`)
                                     await doTask(task['taskCode'])
                                     await $.wait(1000)
@@ -287,7 +296,8 @@ function taskList() {
                                     await $.wait(1000)
                                 }
                             } else {
-                                console.log(`任务: ${task['taskName']} 错误 ${task['taskDescription']}\n`)
+                                // WAITING_WINDOW、WAITING_REWARD
+                                console.log(`任务: ${task['taskName']} 错误 ${task['taskDescription'][0]}\n`)
                             }
                         }
                     } else {
@@ -314,7 +324,7 @@ function doTask(taskCode) {
                     "origin": "https://game.m.ddxq.mobi",
                     "cookie": cookie,
                     "accept-encoding": "gzip, deflate, br",
-                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                     "accept-language": "zh-cn",
                     "referer": "https://game.m.ddxq.mobi/index.html"
                 }
@@ -358,7 +368,7 @@ function doReceiveTask() {
                 "origin": "https://game.m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-encoding": "gzip, deflate, br",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "accept-language": "zh-cn",
                 "referer": "https://game.m.ddxq.mobi/index.html"
             }
@@ -392,14 +402,14 @@ function doReceiveTask() {
 function doBrowseTask() {
     return new Promise((resove) => {
         let options = {
-            url: `https://farm.api.ddxq.mobi/api/v2/task/achieve?latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&env=PE&station_id=${headerInfo.station_id}&city_number=${cityNumber}&api_version=9.28.0&app_client_id=3&native_version=9.40.0&h5_source=&page_type=2&gameId=1&taskCode=BROWSE_GOODS&`,
+            url: `https://farm.api.ddxq.mobi/api/v2/task/achieve?latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&env=PE&station_id=${headerInfo.station_id}&city_number=${cityNumber}&api_version=9.28.0&app_client_id=3&native_version=9.41.0&h5_source=&page_type=2&gameId=1&taskCode=BROWSE_GOODS&`,
             headers: {
                 "accept": "*/*",
                 "origin": "https://cms.api.ddxq.mobi",
                 "cookie": cookie,
                 "accept-language": "zh-cn",
                 "ddmc-game-tid": "1",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "referer": `https://cms.api.ddxq.mobi/cms-service/client/page/v1/getPageInfo?uuid=797531e296f540d6&themeColor=72b1ff&hideShare=true&gameType=Farm&gameTask=BROWSE_GOODS&s=mine_farm_new&native_city_number=${cityNumber}`,
                 "accept-encoding": "gzip, deflate, br"
             }
@@ -429,63 +439,18 @@ function doBrowseTask() {
     })
 }
 
-// 参与浏览商品得饲料后领取
-function getBrowseTask(userTaskLogId) {
-    return new Promise((resove) => {
-        if (userTaskLogId) {
-            let options = {
-                url: `https://farm.api.ddxq.mobi/api/v2/task/reward?${$.params}&gameId=1&userTaskLogId=${userTaskLogId}`,
-                headers: {
-                    "accept": "*/*",
-                    "origin": "https://game.m.ddxq.mobi",
-                    "cookie": cookie,
-                    "accept-encoding": "gzip, deflate, br",
-                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
-                    "accept-language": "zh-cn",
-                    "referer": "https://game.m.ddxq.mobi/index.html"
-                }
-            }
-
-            $.get(options, async (error, response, data) => {
-                try {
-                    if (error) {
-                        console.log(`${JSON.stringify(error)}`)
-                        console.log(`${$.name} API请求失败，请检查网路重试`)
-                    } else {
-                        data = JSON.parse(data)
-                        // console.log('浏览商品得饲料后领取', data)
-                        if (data.success) {
-                            console.log('浏览商品得饲料后领取',data.msg)
-                            console.log('获得饲料数量:', `${data.data.rewards[0].amount}\n`)
-                        } else {
-                            console.log(data.msg)
-                        }
-                    }
-                } catch (e) {
-                    $.logErr('失败', e)
-                } finally {
-                    resove()
-                }
-            })
-        } else {
-            $.log('浏览商品奖水滴任务异常')
-            resove()
-        }
-    })
-}
-
 // 参与鱼塘翻翻乐活动
 function doFishpondDraw() {
     return new Promise((resove) => {
         let options = {
-            url: `https://farm.api.ddxq.mobi/api/v2/lucky-draw-activity/draw?api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.40.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&gameId=1`,
+            url: `https://farm.api.ddxq.mobi/api/v2/lucky-draw-activity/draw?api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.41.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&gameId=1`,
             headers: {
                 "accept": "*/*",
                 "origin": "https://activity.m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-language": "zh-cn",
                 "ddmc-game-tid": "1",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "referer": "https://activity.m.ddxq.mobi/",
                 "accept-encoding": "gzip, deflate, br"
             }
@@ -517,6 +482,51 @@ function doFishpondDraw() {
     })
 }
 
+// 参与浏览商品得饲料、鱼塘翻翻乐、饲料收集器后领取
+function getBrowseTask(taskName, userTaskLogId) {
+    return new Promise((resove) => {
+        if (userTaskLogId) {
+            let options = {
+                url: `https://farm.api.ddxq.mobi/api/v2/task/reward?${$.params}&gameId=1&userTaskLogId=${userTaskLogId}`,
+                headers: {
+                    "accept": "*/*",
+                    "origin": "https://game.m.ddxq.mobi",
+                    "cookie": cookie,
+                    "accept-encoding": "gzip, deflate, br",
+                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
+                    "accept-language": "zh-cn",
+                    "referer": "https://game.m.ddxq.mobi/index.html"
+                }
+            }
+
+            $.get(options, async (error, response, data) => {
+                try {
+                    if (error) {
+                        console.log(`${JSON.stringify(error)}`)
+                        console.log(`${$.name} API请求失败，请检查网路重试`)
+                    } else {
+                        data = JSON.parse(data)
+                        // console.log('浏览商品得饲料后领取', data)
+                        if (data.success) {
+                            console.log(`${taskName}领取:`, data.msg)
+                            console.log('获得饲料数量:', `${data.data.rewards[0].amount}\n`)
+                        } else {
+                            console.log(data.msg)
+                        }
+                    }
+                } catch (e) {
+                    $.logErr('失败', e)
+                } finally {
+                    resove()
+                }
+            })
+        } else {
+            $.log(`${taskName}领饲料任务异常`)
+            resove()
+        }
+    })
+}
+
 // 参与鱼塘翻翻乐后领取
 function getFishpondDraw(userTaskLogId) {
     return new Promise((resove) => {
@@ -528,7 +538,7 @@ function getFishpondDraw(userTaskLogId) {
                     "origin": "https://game.m.ddxq.mobi",
                     "cookie": cookie,
                     "accept-encoding": "gzip, deflate, br",
-                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                     "accept-language": "zh-cn",
                     "referer": "https://game.m.ddxq.mobi/index.html",
                 }
@@ -566,14 +576,14 @@ function getFishpondDraw(userTaskLogId) {
 function hasFishpondDrawCount() {
     return new Promise((resove) => {
         let options = {
-            url: `https://farm.api.ddxq.mobi/api/v2/lucky-draw-activity/info?api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.40.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&gameId=1`,
+            url: `https://farm.api.ddxq.mobi/api/v2/lucky-draw-activity/info?api_version=9.7.3&app_version=1.0.0&app_client_id=3&station_id=${headerInfo.station_id}&native_version=9.41.0&city_number=${cityNumber}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&gameId=1`,
             headers: {
                 "accept": "*/*",
                 "origin": "https://activity.m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-language": "zh-cn",
                 "ddmc-game-tid": "1",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "referer": "https://activity.m.ddxq.mobi/",
                 "accept-encoding": "gzip, deflate, br"
             }
@@ -621,7 +631,7 @@ function fishpondInfo() {
                 "origin": "https://game.m.ddxq.mobi",
                 "cookie": cookie,
                 "accept-encoding": "gzip, deflate, br",
-                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                 "accept-language": "zh-cn",
                 "referer": "https://game.m.ddxq.mobi/index.html",
             }
@@ -677,7 +687,7 @@ function doFeed() {
                     "origin": "https://game.m.ddxq.mobi",
                     "cookie": cookie,
                     "accept-encoding": "gzip, deflate, br",
-                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.40.0 station_id/${headerInfo.station_id}`,
+                    "user-agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 xzone/9.41.0 station_id/${headerInfo.station_id}`,
                     "accept-language": "zh-cn",
                     "referer": "https://game.m.ddxq.mobi/index.html",
                 }
