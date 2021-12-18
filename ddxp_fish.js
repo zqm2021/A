@@ -183,7 +183,7 @@ function cityCode() {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     data = JSON.parse(data)
-                    console.log(`当前城市\n`, data.data)
+                    // console.log(`当前城市\n`, data.data)
                     if (data.success) {
                         cityNumber = data.data.locate_city.city_number;
                         console.log('当前城市:', `${data.data.locate_city.city_name}\n`);
@@ -295,8 +295,11 @@ function taskList() {
                                     await doReceiveTask()
                                     await $.wait(1000)
                                 }
+                            } else if (task['buttonStatus'] == 'WAITING_REWARD') {
+                                // WAITING_REWARD
+                                console.log(`任务: ${task['taskName']} 下一场时间 ${task['hardBoxCanRewardTime']}\n`)
                             } else {
-                                // WAITING_WINDOW、WAITING_REWARD
+                                // WAITING_WINDOW
                                 console.log(`任务: ${task['taskName']} 错误 ${task['taskDescription'][0]}\n`)
                             }
                         }
