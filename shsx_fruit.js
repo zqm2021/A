@@ -24,7 +24,7 @@ let headers = {
     "Origin": "https://wechatx.34580.com",
     "Connection": "keep-alive",
     "Accept": "application/json, text/plain, */*",
-    "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 SHIHANG_APP_V6.0.6 /sa-sdk-ios/sensors-verify/sensorsadmin.34580.cn?production",
+    "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 SHIHANG_APP_V6.0.7 /sa-sdk-ios/sensors-verify/sensorsadmin.34580.cn?production",
     "Accept-Language": "zh-cn",
     "Referer": "https://wechatx.34580.com/wechatgw/frontend-gamification/index.html",
     "Accept-Encoding": "gzip, deflate, br"
@@ -95,6 +95,8 @@ async function main() {
     await getKettleWater();
     await $.wait(2000);
     await treeInfo();
+    await $.wait(2000);
+    await checkInfo();
 }
 
 // 参数处理
@@ -137,6 +139,95 @@ function userInfo() {
                         console.log(data.Message)
                         $.isLogin = false; // cookie过期
                         return
+                    }
+                }
+            } catch (e) {
+                $.logErr('失败', e)
+            } finally {
+                resove()
+            }
+        })
+    })
+}
+
+// 获取当前签到周期
+function checkInfo() {
+    return new Promise((resove) => {
+        let options = {
+            url: `https://api1.34580.com/sz/mb-checkin/checkin/info?sourcetype=${cookieInfo.sourcetype}&accesstoken=${cookieInfo.accesstoken}&customerguid=${cookieInfo.customerguid}&channelID=${cookieInfo.channelID}`,
+            headers: headers
+        }
+
+        $.get(options, async (error, response, data) => {
+            try {
+                if (error) {
+                    console.log(`${JSON.stringify(error)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    data = JSON.parse(data)
+                    if (data.Error == 0) {
+                        console.log(`\n****** 开始每日签到 ******\n`)
+                        console.log(`已连续签到:`, `${data.Data.continuousDay} 天`)
+                        console.log(`拥有补签卡:`, `${data.Data.complementCheckinCardNum} 张\n`)
+                        let check_list = data.Data.checkinRecordDtoList
+                        for (let i=0; i < check_list.length; i++) {
+                            const check = check_list[i]
+                            if (new Date(check['day']).toDateString() == new Date().toDateString()) {
+                                if (check['checkinStatus'] == 0) {
+                                    // 今日未签到 去签到
+                                    console.log(`${check['day']} 未签到，去签到`)
+                                    await $.wait(1000)
+                                    await dailySign()
+                                } else if (check['checkinStatus'] == 1) {
+                                    // 今日已签到
+                                    console.log(`${check['day']} 已签到，明天再来吧~\n`)
+                                } else if (check['checkinStatus'] == 2) {
+                                    // 签到中断、当前签到周期已完成
+                                    console.log(`${check['day']} 签到中断，开始重新签到周期\n`)
+                                }
+                            } else {
+                                // 每个签到周期为7天，第8天按照新的周期计算
+                                // 周期时间内的签到情况
+                                let statusText = check['checkinStatus'] == 0 ? '未签到' : check['checkinStatus'] == 1 ? '已签到' : check['checkinStatus'] == 2 ? '签到中断' : '签到异常'
+                                console.log(`${check['day']}:`, `${statusText}`)
+                            }
+                        }
+                    } else {
+                        console.log(data.Message)
+                    }
+                }
+            } catch (e) {
+                $.logErr('失败', e)
+            } finally {
+                resove()
+            }
+        })
+    })
+}
+
+// 每日签到
+function dailySign() {
+    return new Promise((resove) => {
+        headers['Content-Type'] = "application/json;charset=utf-8"
+        headers['Content-Length'] = "150"
+        headers['Referer'] = "https://wechatx.34580.com/activitys/sh-checkin/index.html"
+        let options = {
+            url: `https://api1.34580.com/sz/mb-checkin/checkin?sourcetype=${cookieInfo.sourcetype}&accesstoken=${cookieInfo.accesstoken}&customerguid=${cookieInfo.customerguid}&channelID=${cookieInfo.channelID}`,
+            headers: headers,
+            body: `{"captchaRid":"","ip":"1.1.1.1","renewFlag":false,"deviceId":"202008101727570d142bc8fb95530e031ed4d20ec2926301714dc3cf3fbcf6","platform":1200}`
+        }
+
+        $.post(options, async (error, response, data) => {
+            try {
+                if (error) {
+                    console.log(`${JSON.stringify(error)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    data = JSON.parse(data)
+                    if (data.Error == 0) {
+                        console.log(`签到成功:`, `恭喜你获取 ${data.Data[0].prizeDetail} 积分\n`)
+                    } else {
+                        console.log(data.Message)
                     }
                 }
             } catch (e) {
