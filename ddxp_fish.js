@@ -258,6 +258,10 @@ function taskList() {
                                     // 购火锅商品得200g
                                     console.log(`任务: ${task['taskName']} 需要手动完成\n`)
                                     // await doBrowseTask()
+                                } else if (task['taskCode'] == 'BUY_GOODS5') {
+                                    // 养乐多 越活越开心
+                                    console.log(`任务: ${task['taskName']} 需要手动完成\n`)
+                                    // await doBrowseTask()
                                 } else if (task['taskCode'] == 'LUCK_DRAW') {
                                     // 参与天天翻牌活动
                                     console.log(`去做任务: ${task['taskName']}\n`)
@@ -609,7 +613,7 @@ function hasFishpondDrawCount() {
                             await $.wait(2000);
                             await doFishpondDraw();
                         } else {
-                            $.log(data.data.reason);
+                            $.log(`${data.data.reason}\n`);
                         }
                     } else {
                         console.log(data.msg)
