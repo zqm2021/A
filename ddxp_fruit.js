@@ -116,7 +116,7 @@ function getUrl(ddxpurl) {
         }
     }
     headerInfo = sendInfo;
-    $.params = `api_version=9.1.0&app_client_id=1&station_id=${headerInfo.station_id}&stationId=${headerInfo.stationId}&native_version=&uid=${headerInfo.uid}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&lat=${headerInfo.lat}&lng=${headerInfo.lng}`;
+    $.params = `api_version=9.1.0&app_client_id=1&station_id=${headerInfo.station_id}&stationId=${headerInfo.stationId}&native_version=&CityId=1001&OSVersion=14&uid=${headerInfo.uid}&latitude=${headerInfo.latitude}&longitude=${headerInfo.longitude}&lat=${headerInfo.lat}&lng=${headerInfo.lng}&device_token=BYBvFmNhBjWOlM5FeDZEvZ+Pfc0nw/POZ6V8AZBuba2e7r3J8JXNU8tkdvvxEZSSdrg60SD508fl/WuJeLUSxoA==`;
     // console.log(sendInfo)
 }
 
