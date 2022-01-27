@@ -192,6 +192,7 @@ function checkInfo() {
                                 console.log(`${check['day']}:`, `${statusText}`)
                             }
                         }
+                        console.log(`\n`)
                     } else {
                         console.log(data.Message)
                     }
@@ -255,10 +256,14 @@ function treeInfo() {
                 } else {
                     data = JSON.parse(data)
                     if (data.Error == 0) {
-                        console.log(`当前种植的果树:`, data.Data.treeName)
-                        console.log(`果树的成长级别:`, data.Data.curPhaseType)
-                        console.log(`果树的成长状态:`, data.Data.curPhaseName)
-                        allMessage += `【账号${$.index}】${$.userName}\n【水果名称】${data.Data.treeName}\n【当前进度】${data.Data.curPhaseName} Lv${data.Data.curPhaseType}\n【任务状态】共需要浇水 ${data.Data.targetWateringTimes} 次，已经浇水 ${data.Data.curWateringTimes} 次，还需要浇水 ${data.Data.needWateringTimes} 次\n\n`
+                        if (data.Data) {
+                            console.log(`当前种植的果树:`, data.Data.treeName)
+                            console.log(`果树的成长级别:`, data.Data.curPhaseType)
+                            console.log(`果树的成长状态:`, data.Data.curPhaseName)
+                            allMessage += `【账号${$.index}】${$.userName}\n【水果名称】${data.Data.treeName}\n【当前进度】${data.Data.curPhaseName} Lv${data.Data.curPhaseType}\n【任务状态】共需要浇水 ${data.Data.targetWateringTimes} 次，已经浇水 ${data.Data.curWateringTimes} 次，还需要浇水 ${data.Data.needWateringTimes} 次\n\n`
+                        } else {
+                            allMessage += `【账号${$.index}】${$.userName}\n【任务状态】当前未选择新的果树，请登录App查看\n\n`
+                        }
                     } else {
                         console.log(data.Message)
                     }
@@ -297,20 +302,37 @@ function taskList() {
                                 await $.wait(2000)
                                 await taskReceive(task['taskName'], task['taskId'])
                             } else if (task['taskStatus'] == 1) {
-                                if (task['taskId'] == 88) {
+                                if (task['taskType'] == 10) {
+                                    // 逛逛赠水滴
+                                    console.log(`领水滴任务: ${task['taskName']} 进行中，去完成`)
+                                    await $.wait(5000)
+                                    await walkComplete(task['taskName'], task['taskId'])
+                                } else if (task['taskType'] == 4) {
                                     // 完成每日分享赠水滴
                                     console.log(`领水滴任务: ${task['taskName']} 进行中，去完成`)
                                     await $.wait(2000)
                                     await shareComplete(task['taskName'])
-                                } else if (task['taskId'] == 94 || task['taskId'] == 95 || task['taskId'] == 96) {
-                                    // 逛爆品10秒赠水滴 94 、 逛“周三半价日”赠水滴 95 、逛爆品赠水滴 96
-                                    console.log(`领水滴任务: ${task['taskName']} 进行中，去完成`)
-                                    await $.wait(5000)
-                                    await walkComplete(task['taskName'], task['taskId'])
                                 } else {
                                     // 下单满29元赠水滴 87
                                     console.log(`领水滴任务: ${task['taskName']} 需要手动完成\n`)
                                 }
+
+                                // if (task['taskId'] == 88) {
+                                //     // 完成每日分享赠水滴
+                                //     console.log(`领水滴任务: ${task['taskName']} 进行中，去完成`)
+                                //     await $.wait(2000)
+                                //     await shareComplete(task['taskName'])
+                                // } else if (task['taskId'] == 94 || task['taskId'] == 95 || task['taskId'] == 96|| task['taskId'] == 97 || task['taskId'] == 98 || task['taskId'] == 99) {
+                                //     // 逛爆品10秒赠水滴 94 、 逛“周三半价日”赠水滴 95 、逛爆品赠水滴 96
+                                //     // 逛爆品赠水滴 99 、 爆品免费赠水滴 98 、 逛“礼盒清仓活动”赠水滴 97
+                                //     console.log(`领水滴任务: ${task['taskName']} 进行中，去完成`)
+                                //     await $.wait(5000)
+                                //     await walkComplete(task['taskName'], task['taskId'])
+                                // } else {
+                                //     // 下单满29元赠水滴 87
+                                //     console.log(`领水滴任务: ${task['taskName']} 需要手动完成\n`)
+                                // }
+
                             } else if (task['taskStatus'] == 2) {
                                 console.log(`领水滴任务: ${task['taskName']} 已完成\n`)
                             } else if (task['taskStatus'] == 3) {
@@ -424,12 +446,6 @@ function shareComplete(taskName) {
 function walkComplete(taskName, taskId) {
     return new Promise((resove) => {
         if (taskName && taskId) {
-            let url = ''
-            if (taskId == 95) {
-                url = `https://api1.34580.com/sz/garden/task/browseCallBack?timestamp=1643165020944&sessionid=kGvBYHCUwgznsByqIFyVHliZGYGDwywL&stationId=10159901&sourcetype=2&accesstoken=3c9a1241c6dc4c89&customerguid=5d62ecd2-c370-452f-bf5f-57e96ffc6093&channelID=0&taskId=95`
-                // headers.Referer = `https://wechatx.34580.com/topics2/sz/b872baef280bb572b090ebccd56da31f/index.html?taskId=95&browsePageDuration=15&project=1&sessionId=kGvBYHCUwgznsByqIFyVHliZGYGDwywL&CityFlag=sz&CustomerGuid=5d62ecd2-c370-452f-bf5f-57e96ffc6093&appversion=6.0.9&siteid=1&cityid=1&_c=0&SMDeviceId=202008101727570d142bc8fb95530e031ed4d20ec2926301714dc3cf3fbcf6&networkStatus=2&phone=13812603190`
-            }
-
             let options = {
                 url: `https://api1.34580.com/sz/garden/task/browseCallBack?taskId=${taskId}&customerguid=${cookieInfo.customerguid}&sourcetype=${cookieInfo.sourcetype}&accesstoken=${cookieInfo.accesstoken}&stationId=${cookieInfo.stationId}&channelID=${cookieInfo.channelID}`,
                 headers: headers
@@ -525,10 +541,10 @@ function smashEggs() {
                             await $.wait(2000);
                             await smashEggs();
                         } else {
-                            $.log('今日砸蛋次数已用完，明日再来吧~\n');
+                            console.log('今日砸蛋次数已用完，明日再来吧~\n');
                         }
                     } else {
-                        console.log(`${data.Message}\n`)
+                        console.log(`玩砸蛋游戏`, `${data.Message}\n`)
                     }
                 }
             } catch (e) {
@@ -561,14 +577,14 @@ function getUnReceiveAwardList() {
                         for (let i=0; i < task_list.length; i++) {
                             const task = task_list[i]
                             if (task['canReceive'] == true) {
-                                $.log(`${task['rewardName']} 未领取，去领取`)
+                                console.log(`${task['rewardName']} 未领取，去领取`)
                                 await $.wait(2000)
                                 await getReceiveAward(task['rewardName'], task['receiveId'], task['rewardType'])
                             } else if (task['canReceive'] == false) {
                                 if (task['canReceiveTime']) {
-                                    $.log(`${task['rewardName']} 暂时不能领取，领取时间为${task['canReceiveTime']}\n`)
+                                    console.log(`${task['rewardName']} 暂时不能领取，领取时间为${task['canReceiveTime']}\n`)
                                 } else {
-                                    $.log(`${task['rewardName']} 暂时不能领取\n`)
+                                    console.log(`${task['rewardName']} 暂时不能领取\n`)
                                 }
                             }
                         }
@@ -642,11 +658,11 @@ function getKettleWater() {
                         console.log('可浇的水滴数量', `${data.Data.waterWeight}\n`)
                         // 去浇水
                         if (data.Data.waterWeight >= 10) {
-                            $.log('去果园浇水');
+                            console.log('去果园浇水');
                             await $.wait(2000);
                             await doWater();
                         } else {
-                            $.log('水滴余额不足~\n');
+                            console.log('水滴余额不足~\n');
                         }
                     } else {
                         console.log(data.Message)
@@ -679,38 +695,39 @@ function doWater() {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     data = JSON.parse(data)
+                    console.log(`去浇水\n`, data)
                     if (data.Error == 0) {
                         console.log(`浇水成功，剩余水滴数量:`, `${data.Data.waterWeight}\n`)
                         // 出现惊喜小礼物
                         if (data.Data.wateringReward) {
-                            $.log(`悄悄送你一份小礼物，快拆开看看`)
-                            $.log(`意外获取水滴: ${data.Data.wateringReward.prizeValue}\n`)
+                            console.log(`悄悄送你一份小礼物，快拆开看看`)
+                            console.log(`意外获取水滴: ${data.Data.wateringReward.prizeValue}\n`)
                             // 获取未领取的水滴
                             await $.wait(2000)
                             await getUnReceiveAwardList()
                         }
                         // 出现升级奖励
                         if (data.Data.isAddLevel && data.Data.upgradeReward) {
-                            $.log(`果树等级从 Lv${data.Data.beforePhaseType} 升级到 Lv${data.Data.curPhaseType}`)
-                            $.log(`意外获取水滴: ${data.Data.upgradeReward.prizeValue}\n`)
+                            console.log(`果树等级从 Lv${data.Data.beforePhaseType} 升级到 Lv${data.Data.curPhaseType}`)
+                            console.log(`意外获取水滴: ${data.Data.upgradeReward.prizeValue}\n`)
                             // 获取未领取的水滴
                             await $.wait(2000)
                             await getUnReceiveAwardList()
                         }
                         // 已经种植完成
                         if (data.Data.isPlantFinish) {
-                            $.log(`果树已种植完成,请及时收取\n`)
+                            console.log(`果树已种植完成,请及时收取\n`)
                             if (notify) {
                                 await notify.sendNotify($.name, `恭喜你,【账号${$.index}】${$.userName}\n【任务状态】果树已种植完成,请及时收取\n\n`);
                             } else {
                                 $.msg($.name, '', `恭喜你,【账号${$.index}】${$.userName}\n【任务状态】果树已种植完成,请及时收取\n\n`)
                             }
                         } else if (data.Data.waterWeight >= 10) {
-                            $.log('去果园浇水');
+                            console.log('去果园浇水');
                             await $.wait(2000);
                             await doWater();
                         } else {
-                            $.log('水滴余额不足~\n');
+                            console.log('水滴余额不足~\n');
                         }
                     } else {
                         console.log(data.Message)
