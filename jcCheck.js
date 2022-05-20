@@ -1,6 +1,6 @@
 /*
 机场签到 需要在脚本里填写邮箱密码
-cron "0 0 8 * * ?" ql_jcCheck.js
+19 9 * * * ql_jcCheck.js
 */
 
 const $ = new Env("机场签到");
