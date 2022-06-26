@@ -18,7 +18,7 @@ let hjh = {
 
 /*
 2.ikuuu机场
-注册地址:https://ikuuu.co/
+注册地址:https://ikuuu.ltd/
 白嫖版 注册送50g 签到每天1g以内 随机 速度还行
 套餐10元300g 提供小火箭下载账号
 */
@@ -57,7 +57,7 @@ let jj = {
     if (iku.email == "" && iku.pwd == "") {
         console.log("ikuuu邮箱密码为空,跳过执行\n\n");
     } else {
-        await login("iku", "https://ikuuu.co/auth/login", iku);
+        await login("iku", "https://ikuuu.ltd/auth/login", iku);
     }
 
     if (jj.email == "" && jj.pwd == "") {
@@ -102,7 +102,7 @@ function login (name, url, raw, timeout = 0) {
                         if (name == "好家伙") {
                             checkurl = "https://haojiahuo.live/user/checkin";
                         } else if (name == "iku") {
-                            checkurl = "https://ikuuu.co/user/checkin";
+                            checkurl = "https://ikuuu.ltd/user/checkin";
                         } else if (name == "几鸡") {
                             checkurl = "https://a.luxury/user/checkin";
                         }
